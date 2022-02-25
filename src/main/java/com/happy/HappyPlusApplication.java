@@ -21,16 +21,13 @@ public class HappyPlusApplication {
 		
 		ConfigurableApplicationContext run = SpringApplication.run(HappyPlusApplication.class, args);
 		SynchronizationService synchronizationService = run.getBean(SynchronizationService.class);
-		//synchronizationService.synchronizationShares();
+		synchronizationService.synchronizationShares();
 		//synchronizationService.relation();
-
+/*
 		SharesDailyService sharesDailyService = run.getBean(SharesDailyService.class);
 
 		List<SharesDaily> synchronization = sharesDailyService.synchronization(SharesDailyService.SharesDailyReq.builder()
 				.trade_date("20220223")
-				.build());
-
-		System.out.println(JSONObject.toJSONString(synchronization));
-
+				.build());*/
 	}
 }

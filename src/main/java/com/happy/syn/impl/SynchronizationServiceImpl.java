@@ -47,7 +47,7 @@ public class SynchronizationServiceImpl implements SynchronizationService {
 
         log.debug("开始同步类型");
         //  类型落库
-        sharesTypeService.synchronization();
+        //sharesTypeService.synchronization();
         log.debug("同步类型结束");
     }
 

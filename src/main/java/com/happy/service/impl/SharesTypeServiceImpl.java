@@ -6,8 +6,10 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+import com.happy.ask.AskMoneyService;
 import com.happy.dao.SharesTypeDao;
 import com.happy.domain.SharesType;
+import com.happy.en.AskMoneyReqEnum;
 import com.happy.net.ClientService;
 import com.happy.service.SharesTypeService;
 import com.happy.util.Constant;
@@ -23,7 +25,7 @@ import java.util.stream.Collectors;
 public class SharesTypeServiceImpl extends ServiceImpl<SharesTypeDao, SharesType> implements SharesTypeService {
 
     @Autowired
-    private ClientService clientService;
+    private AskMoneyService askMoneyService;
 
     @Override
     public void synchronization() {
@@ -33,8 +35,7 @@ public class SharesTypeServiceImpl extends ServiceImpl<SharesTypeDao, SharesType
 
     @Override
     public List<SharesType> findByNet() {
-        List<Map<String, String>> result = clientService.askMoneyGet(ClientService.Api.ASK_MONEY_STRATEGY, clientService.getDefAskMoney());
-
+        List<Map<String, String>> result = askMoneyService.defGet(ClientService.Api.ASK_MONEY_STRATEGY, AskMoneyReqEnum.SHARES_TYPE);
         List<String> types = result.stream()
                 .map(item -> item.get(Constant.DEF_KEY))
                 .collect(Collectors.toList());

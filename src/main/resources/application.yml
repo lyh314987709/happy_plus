@@ -1,16 +1,9 @@
 spring:
   datasource:
-    url: jdbc:mysql://rm-8vb1gy9i111532nh8.mysql.zhangbei.rds.aliyuncs.com:3306/test?createDatabaseIfNotExist=true&autoReconnect=true&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&useSSL=false
-    username: ylzdbdev
-    password: d3dD46%dGb&31ccb8
-    driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
-      auto-commit: true
-      connection-timeout: 20000
-      maximum-pool-size: 30
-      minimum-idle: 5
-      idle-timeout: 300000
-      max-lifetime: 1200000
+      jdbc-url: jdbc:mysql://124.221.100.10:4306/happy_plus?createDatabaseIfNotExist=true&autoReconnect=true&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&useSSL=false
+      username: admin
+      password: RwCOvcvFFmc0
 
 
 mybatis-plus:

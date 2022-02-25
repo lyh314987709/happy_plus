@@ -10,6 +10,7 @@ import com.happy.net.ClientService;
 import com.happy.service.SharesDailyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +23,9 @@ public class SharesDailyServiceImpl extends ServiceImpl<SharesDailyDao, SharesDa
 
     @Autowired
     private ClientService clientService;
+
+    @Autowired
+    private TaskExecutor taskExecutor;
 
     @Override
     public List<SharesDaily> synchronization(SharesDailyReq req) {
