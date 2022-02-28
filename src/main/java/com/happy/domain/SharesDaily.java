@@ -13,6 +13,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Data
 @SuperBuilder
@@ -28,8 +29,10 @@ public class SharesDaily {
     private Long id;
 
     @TableField("ts_code")
-    @FiledConvert("ts_code")
+    @FiledConvert("ts_code 股票代码")
     private String tsCode;
+
+    private String name;
 
     @TableField("trade_date")
     @FiledConvert("trade_date")
@@ -75,8 +78,32 @@ public class SharesDaily {
     private UpDown upDown;
 
     @TableField("stop")
-    private Stop stop;
+    @FiledConvert("涨跌停 曾涨停")
+    private String stop;
 
+    @TableField("stop_reason")
+    @FiledConvert("涨停原因 跌停原因")
+    private String stopReason;
+
+    /**
+     * 最终时间
+     */
+    @FiledConvert("最终跌停时间 最终涨停时间")
+    private String endStopTime;
+
+    /**
+     * 开始时间
+     */
+    @FiledConvert("首次跌停时间 首次涨停时间")
+    private String startStopTime;
+    /**
+     * 天数
+     */
+    @FiledConvert("连续涨停天数 连续跌停天数")
+    private int days;
+
+    @FiledConvert("涨停开板次数")
+    private int openFrequency;
 
     @Getter
     @NoArgsConstructor
@@ -86,33 +113,19 @@ public class SharesDaily {
         DOWN
     }
 
+    public SharesDaily build(Shares shares) {
 
-    @Getter
-    @NoArgsConstructor
-    public enum Stop {
-        UP,
-        DEF,
-        DOWN
-    }
+        if(Objects.nonNull(shares)) {
+            this.name = shares.getName();
+        }
 
-    public SharesDaily build() {
         this.upDown = UpDown.DEF;
-
         if(this.pctChg.compareTo(BigDecimal.ZERO) >0) {
             this.upDown = UpDown.UP;
         }
 
         if(BigDecimal.ZERO.compareTo(this.pctChg) > 0) {
             this.upDown = UpDown.DOWN;
-        }
-
-        this.stop = Stop.DEF;
-
-        if(this.pctChg.compareTo(new BigDecimal("9.95")) >0) {
-            this.stop = Stop.UP;
-        }
-        if(this.pctChg.compareTo(new BigDecimal("-9.95")) == -1) {
-            this.stop = Stop.DOWN;
         }
         return this;
     }

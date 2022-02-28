@@ -2,6 +2,9 @@ package com.happy.net;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.ImmutableList;
+import com.happy.ask.impl.AskMoneyServiceImpl;
+import com.happy.en.AskMoneyReqEnum;
+import com.happy.service.impl.SharesTypeServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -15,13 +18,15 @@ import java.util.Map;
 @Slf4j
 public class ClientServiceImpl implements ClientService{
     public static void main(String[] args) throws UnsupportedEncodingException {
-       System.out.println(JSONObject.toJSONString(new ClientServiceImpl().post(Api.DAILY, new JSONObject()
-               .fluentPut("trade_date", "20220223").fluentPut("ts_code", "000001.SZ"))));
+       /*System.out.println(JSONObject.toJSONString(new ClientServiceImpl().post(Api.DAILY, new JSONObject()
+               .fluentPut("trade_date", "20220223").fluentPut("ts_code", "000001.SZ"))));*/
         //System.out.println(JSONObject.toJSONString(new ClientServiceImpl().post(Api.LIMIT_LIST, new JSONObject().fluentPut("limit_type", "U"))));
         /*System.out.println(JSONObject.toJSONString(new ClientServiceImpl().post(Api.TOP10, new JSONObject().fluentPut("trade_date", "20220221")
               .fluentPut("market_type", "1"))));*/
-        //System.out.println(JSONObject.toJSONString(new ClientServiceImpl().askMoneyGet(Api.ASK_MONEY_STRATEGY, new JSONObject().fluentPut("question", "所属概念"))));
+        //System.out.println(JSONObject.toJSONString(new ClientServiceImpl().askMoneyGet(Api.ASK_MONEY_STRATEGY, new JSONObject().fluentPut("question", "20220223涨停跌停"))));
 
+
+        log.debug(JSONObject.toJSONString(new ClientServiceImpl().askMoneyGet(ClientService.Api.ASK_MONEY_STRATEGY, AskMoneyReqEnum.SHARES_TYPE.apply())));
 
        /* List<Map<String, String>> maps = new ClientServiceImpl().askMoneyGet(Api.ASK_MONEY_STRATEGY, new JSONObject().fluentPut("question", "所属概念")
                 .fluentPut("perpage", 5000)

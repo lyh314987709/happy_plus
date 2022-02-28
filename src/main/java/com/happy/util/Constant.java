@@ -11,4 +11,5 @@ public class Constant {
     public static String STOCK = "stock";
 
     public static String QUESTION = "question";
+
 }

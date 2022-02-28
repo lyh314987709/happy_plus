@@ -19,11 +19,11 @@ public class AskMoneyServiceImpl implements AskMoneyService {
 
     @Override
     public List<Map<String, String>> defGet(ClientService.Api api, AskMoneyReqEnum askReq) {
-        return defGet(api, askReq.get());
+        return clientService.askMoneyGet(ClientService.Api.ASK_MONEY_STRATEGY, askReq.apply());
     }
 
     @Override
-    public List<Map<String, String>> defGet(ClientService.Api api, JSONObject json) {
-        return clientService.askMoneyGet(ClientService.Api.ASK_MONEY_STRATEGY, json);
+    public List<Map<String, String>> defGet(ClientService.Api api, AskMoneyReqEnum askReq, JSONObject json) {
+        return clientService.askMoneyGet(ClientService.Api.ASK_MONEY_STRATEGY, askReq.apply(json));
     }
 }

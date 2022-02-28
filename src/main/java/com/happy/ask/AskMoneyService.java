@@ -11,6 +11,6 @@ public interface AskMoneyService {
 
     List<Map<String, String>> defGet(ClientService.Api api, AskMoneyReqEnum askReq);
 
-    List<Map<String, String>> defGet(ClientService.Api api, JSONObject json);
+    List<Map<String, String>> defGet(ClientService.Api api, AskMoneyReqEnum askReq, JSONObject json);
 
 }

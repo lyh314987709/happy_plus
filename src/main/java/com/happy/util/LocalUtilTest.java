@@ -1,8 +1,11 @@
 package com.happy.util;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.happy.net.ClientService;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.jsqlparser.statement.execute.Execute;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -14,13 +17,15 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 public class LocalUtilTest {
 
     public static void main(String[] args) {
-        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJVU0VSX0NPREUiOiI0N2M3MDM4ZjM1M2M0OTZlYWM4NmRiYjc5ZmFkMWQxMiIsIkxPR0lOX1RJTUUiOiIxNjQ1NzU2NDY2ODgwIiwiVE9LRU5fVFlQRSI6InBjIn0.g9fV1bFsO1meILV8-qlcC8br0cSDMhEBr2MTmem6iW8";
-        doHandler("/Users/apple/Documents/text.txt", "http://mp.yunlizhi.cn/hope-saas-audit-web/otmsBill/initShppingOrderBill", token, false);
+        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJVU0VSX0NPREUiOiI0N2M3MDM4ZjM1M2M0OTZlYWM4NmRiYjc5ZmFkMWQxMiIsIkxPR0lOX1RJTUUiOiIxNjQ2MDI4MzI2NzM3IiwiVE9LRU5fVFlQRSI6InBjIn0.ttb7h4cxa5ygc6-V_Op8HP8lXyTsLolvULVnNQ0gniY";
+        //doHandlerLog("/Users/apple/Documents/order_txt.txt", "http://mp.yunlizhi.cn/hope-saas-audit-web/otmsBill/initShppingOrderBill", token, false);
+        postOmsPlus(ImmutableSet.of("D2202230030040000128"), "http://otms.yunlizhi.cn/tms_plus_waybill/oms_plus/event/private/bill/create", token);
     }
 
 
@@ -43,12 +48,28 @@ public class LocalUtilTest {
 
     }
 
+    public static void postOmsPlus(Set<String> orderCode, String url, String token) {
+        JSONObject json = new JSONObject().fluentPut("odrNos", orderCode);
+        post(url, JSONObject.toJSONString(json), token);
+    }
+
     public static void doHandler(String path, String url, String token, Boolean haveTry) {
         List<String> list = parseText(path);
         if(haveTry) {
             list = ImmutableList.of(list.get(0));
         }
         list.forEach(item -> post(url, item, token));
+    }
+
+    public static void doHandlerLog(String path, String url, String token, Boolean haveTry) {
+        List<String> list = parseText(path);
+        list.stream().forEach(item -> {
+            try {
+                JSONObject.parseArray(item, JSONObject.class);
+            } catch (Exception e) {
+                log.debug(item);
+            }
+        });
     }
 
 

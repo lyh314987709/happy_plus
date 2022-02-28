@@ -7,12 +7,25 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface SharesDailyService extends IService<SharesDaily> {
 
 
     List<SharesDaily> synchronization(SharesDailyReq req);
+
+    /**
+     * 根据时间纬度处理数据是否停
+     * @param time
+     */
+    void isStop(LocalDateTime time);
+
+    void isStop();
+
+    void onceStop(LocalDateTime time);
+
+    void onceStop();
 
     @AllArgsConstructor
     @NoArgsConstructor

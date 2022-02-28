@@ -12,6 +12,7 @@ import com.happy.syn.SynchronizationService;
 import com.happy.util.Constant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -36,6 +37,9 @@ public class SynchronizationServiceImpl implements SynchronizationService {
     @Autowired
     private SharesIntermediateService sharesIntermediateService;
 
+    @Autowired
+    private TaskExecutor taskExecutor;
+
 
     @Override
     public void synchronizationShares() {
@@ -44,17 +48,16 @@ public class SynchronizationServiceImpl implements SynchronizationService {
         sharesService.synchronization();
         log.debug("同步基础数据结束");
 
-
         log.debug("开始同步类型");
         //  类型落库
-        //sharesTypeService.synchronization();
+        sharesTypeService.synchronization();
         log.debug("同步类型结束");
     }
 
     @Override
     public void relation() {
 
-        System.out.println("开始绑定数据关系");
+        log.debug("开始绑定数据关系");
         //  从问财重新获取数据
         List<Map<String, String>> result = clientService.askMoneyGet(ClientService.Api.ASK_MONEY_STRATEGY, clientService.getDefAskMoney());
 
@@ -66,12 +69,15 @@ public class SynchronizationServiceImpl implements SynchronizationService {
     }
 
     private void relation(List<Req> list) {
-        log.debug("开始绑定数据关系 list");
-        List<SharesIntermediate> sharesIntermediates = list.stream().map(item -> item.getTypeName().stream()
-                .map(i -> SharesIntermediate.builder().tsCode(item.getTsCode()).sharesTypeName(i).build())
-                .collect(Collectors.toList()))
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
-        sharesIntermediateService.saveOrUpdateBatch(sharesIntermediates);
+        taskExecutor.execute(() -> {
+            log.debug("开始绑定数据关系 list");
+            List<SharesIntermediate> sharesIntermediates = list.stream().map(item -> item.getTypeName().stream()
+                    .map(i -> SharesIntermediate.builder().tsCode(item.getTsCode()).sharesTypeName(i).build())
+                    .collect(Collectors.toList()))
+                    .flatMap(Collection::stream)
+                    .collect(Collectors.toList());
+            sharesIntermediateService.saveOrUpdateBatch(sharesIntermediates);
+        });
+
     }
 }

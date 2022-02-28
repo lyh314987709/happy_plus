@@ -3,12 +3,9 @@ package com.happy.convert;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.ImmutableList;
 import com.happy.anno.FiledConvert;
-import com.happy.domain.Shares;
+import com.happy.util.Kit;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ConvertUtil {
@@ -42,6 +39,23 @@ public class ConvertUtil {
             Map<String, String> new_map = new HashMap<>();
             item.entrySet().stream().forEach(i -> {
                 new_map.put(filedMap.get(i.getKey()), i.getValue());
+            });
+            return new_map;
+        }).collect(Collectors.toList());
+
+        return JSONObject.parseArray(JSONObject.toJSONString(result), clazz);
+    }
+
+    public static <T> List<T> convertLike(List<Map<String, String>> list, Class<T> clazz) {
+        //  字段映射信息
+        Map<String, String> filedMap = ConvertUtil.filedConvertAnalysis(clazz);
+
+        Set<String> keySet = filedMap.keySet();
+
+        List<Map<String, String>> result = list.stream().map(item -> {
+            Map<String, String> new_map = new HashMap<>();
+            item.entrySet().stream().forEach(i -> {
+                new_map.put(filedMap.get(Kit.contain(keySet, i.getKey())), i.getValue());
             });
             return new_map;
         }).collect(Collectors.toList());
