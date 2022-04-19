@@ -9,6 +9,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * 股票与分类的关联关系（中间表）
+ */
 @Data
 @SuperBuilder
 @NoArgsConstructor

@@ -1,5 +1,6 @@
 package com.happy.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.happy.domain.SharesDaily;
 import lombok.AllArgsConstructor;
@@ -9,23 +10,23 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 public interface SharesDailyService extends IService<SharesDaily> {
 
-
+    /**
+     * 同步股票的交易数据
+     * @param req
+     * @return
+     */
     List<SharesDaily> synchronization(SharesDailyReq req);
 
-    /**
-     * 根据时间纬度处理数据是否停
-     * @param time
-     */
-    void isStop(LocalDateTime time);
 
-    void isStop();
 
-    void onceStop(LocalDateTime time);
+    void onceStop(LocalDateTime time, JSONObject json);
 
-    void onceStop();
+    void handler(LocalDateTime time, JSONObject json, Predicate<List<SharesDaily>> predicate);
 
     @AllArgsConstructor
     @NoArgsConstructor

@@ -10,6 +10,7 @@ import com.happy.service.SharesDailyService;
 import com.happy.service.SharesIntermediateService;
 import com.happy.service.SharesService;
 import com.happy.service.StatisticService;
+import com.happy.util.JSONObjectUtil;
 import com.happy.util.Kit;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,8 +80,7 @@ public class StatisticServiceImpl implements StatisticService {
         LambdaQueryChainWrapper<SharesDaily> wrapper = sharesDailyService.lambdaQuery()
                 .in(!CollectionUtils.isEmpty(req.getTsCode()), SharesDaily::getTsCode, req.getTsCode())
                 .eq(!StringUtils.isEmpty(req.getStop()), SharesDaily::getStop, req.getStop())
-                .eq(Objects.nonNull(req.getTradeDate()), SharesDaily::getTradeDate, req.getTradeDate())
-                ;
+                .eq(Objects.nonNull(req.getTradeDate()), SharesDaily::getTradeDate, req.getTradeDate());
 
 
         if(!CollectionUtils.isEmpty(req.getTradeDates()) && req.getTradeDates().size() >= 2) {
@@ -93,6 +93,6 @@ public class StatisticServiceImpl implements StatisticService {
                     req.getPctChgs().get(0), req.getPctChgs().get(1));
         }
 
-        return Kit.toJSONObject(wrapper.list());
+        return JSONObjectUtil.toJSONObject(wrapper.list());
     }
 }

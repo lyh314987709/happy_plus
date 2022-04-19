@@ -8,7 +8,7 @@ import com.happy.domain.SharesType;
 import com.happy.en.AskMoneyReqEnum;
 import com.happy.net.ClientService;
 import com.happy.service.SharesTypeService;
-import com.happy.util.Kit;
+import com.happy.util.JSONObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +30,7 @@ public class SharesTypeServiceImpl extends ServiceImpl<SharesTypeDao, SharesType
     @Override
     public List<SharesType> findByNet() {
         List<Map<String, String>> result = askMoneyService.defGet(ClientService.Api.ASK_MONEY_STRATEGY, AskMoneyReqEnum.SHARES_TYPE);
-        return Kit.parseArray(AskMoneyReqEnum.SHARES_TYPE.result(result), SharesType.class);
+        return JSONObjectUtil.parseArray(AskMoneyReqEnum.SHARES_TYPE.result(result), SharesType.class);
     }
 
 

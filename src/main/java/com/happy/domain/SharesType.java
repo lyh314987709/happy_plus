@@ -9,6 +9,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * 股票分类
+ */
 @Data
 @SuperBuilder
 @NoArgsConstructor

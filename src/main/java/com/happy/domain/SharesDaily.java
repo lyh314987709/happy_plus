@@ -12,9 +12,11 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.Objects;
+import java.util.Optional;
 
+/**
+ * 股票每天的交易信息
+ */
 @Data
 @SuperBuilder
 @NoArgsConstructor
@@ -32,44 +34,74 @@ public class SharesDaily {
     @FiledConvert("ts_code 股票代码")
     private String tsCode;
 
+    /**
+     * 名称
+     */
     private String name;
 
     @TableField("trade_date")
     @FiledConvert("trade_date")
-    private LocalDate tradeDate;
+    private String tradeDate;
 
+    /**
+     * 开盘价
+     */
     @TableField("open_amount")
     @FiledConvert("open")
     private BigDecimal open;
 
+    /**
+     * 最高加
+     */
     @TableField("high")
     @FiledConvert("high")
     private BigDecimal high;
 
+    /**
+     * 最低价
+     */
     @TableField("low")
     @FiledConvert("low")
     private BigDecimal low;
 
+    /**
+     * 收盘价
+     */
     @TableField("close_amount")
     @FiledConvert("close")
     private BigDecimal close;
 
+    /**
+     * 昨日收盘价
+     */
     @TableField("pre_close")
     @FiledConvert("pre_close")
     private BigDecimal perClose;
 
+    /**
+     * 涨跌额
+     */
     @TableField("change_amount")
     @FiledConvert("change")
     private BigDecimal change;
 
+    /**
+     * 涨跌额
+     */
     @TableField("pct_chg")
     @FiledConvert("pct_chg")
     private BigDecimal pctChg;
 
+    /**
+     * 成交量
+     */
     @TableField("vol")
     @FiledConvert("vol")
     private BigDecimal vol;
 
+    /**
+     * 成交额
+     */
     @TableField("amount")
     @FiledConvert("amount")
     private BigDecimal amount;
@@ -78,7 +110,7 @@ public class SharesDaily {
     private UpDown upDown;
 
     @TableField("stop")
-    @FiledConvert("涨跌停 曾涨停")
+    @FiledConvert("涨跌停 曾涨停 曾跌停")
     private String stop;
 
     @TableField("stop_reason")
@@ -102,8 +134,18 @@ public class SharesDaily {
     @FiledConvert("连续涨停天数 连续跌停天数")
     private int days;
 
-    @FiledConvert("涨停开板次数")
+    @FiledConvert("开板次数")
     private int openFrequency;
+
+    /**
+     * 涨幅大于5%
+     */
+    private Boolean greaterThanFive;
+
+    /**
+     * 跌幅大于5%
+     */
+    private Boolean dropThanFive;
 
     @Getter
     @NoArgsConstructor
@@ -115,9 +157,7 @@ public class SharesDaily {
 
     public SharesDaily build(Shares shares) {
 
-        if(Objects.nonNull(shares)) {
-            this.name = shares.getName();
-        }
+        this.name = Optional.ofNullable(shares).map(Shares::getName).orElse("EMPTY");
 
         this.upDown = UpDown.DEF;
         if(this.pctChg.compareTo(BigDecimal.ZERO) >0) {

@@ -55,6 +55,9 @@ public class ConvertUtil {
         List<Map<String, String>> result = list.stream().map(item -> {
             Map<String, String> new_map = new HashMap<>();
             item.entrySet().stream().forEach(i -> {
+                if(Objects.isNull(i.getValue())) {
+                    return;
+                }
                 new_map.put(filedMap.get(Kit.contain(keySet, i.getKey())), i.getValue());
             });
             return new_map;

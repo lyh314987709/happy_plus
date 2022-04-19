@@ -7,8 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import java.time.LocalDateTime;
-
 @MapperScan("com.happy.dao")
 @EnableCaching
 @SpringBootApplication
@@ -22,13 +20,12 @@ public class HappyPlusApplication {
 
 		SharesDailyService sharesDailyService = run.getBean(SharesDailyService.class);
 
-		//sharesDailyService.synchronization(SharesDailyService.SharesDailyReq.builder().trade_date("20220225")
-		//		.build());
+		sharesDailyService.synchronization(SharesDailyService.SharesDailyReq.builder().trade_date("20220418").build());
 
-		sharesDailyService.isStop(LocalDateTime.of(2022, 02, 25, 23, 59, 59));
-		System.out.println("isStop出来完成");
+		//sharesDailyService.isStop(LocalDateTime.of(2022, 02, 25, 23, 59, 59));
+		//System.out.println("isStop出来完成");
 
-		sharesDailyService.onceStop(LocalDateTime.of(2022, 02, 25, 23, 59, 59));
-		System.out.println("onceStop处理完成");
+		//sharesDailyService.onceStop(LocalDateTime.of(2022, 02, 25, 23, 59, 59));
+		//System.out.println("onceStop处理完成");
 	}
 }
